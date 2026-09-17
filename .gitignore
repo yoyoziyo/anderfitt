@@ -1,69 +1,36 @@
-# Miscellaneous
-*.class
+# Arquivos locais, caches e builds (qualquer nível)
+**/.dart_tool/
+**/build/
+**/coverage/
+**/.pub-cache/
+**/.pub/
+**/node_modules/
+**/.flutter-plugins-dependencies
+**/.release/
+**/.idea/
+**/.widget_preview/
+*.iml
 *.log
 *.pyc
-*.swp
 .DS_Store
-.atom/
-.build/
-.buildlog/
-.history
-.svn/
-.swiftpm/
-migrate_working_dir/
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-/coverage/
-
-# Symbolication related
-app.*.symbols
-
-# Obfuscation related
-app.*.map.json
-
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
-
-# Widget Preview related
-.widget_preview/
-
-# Chave privada de assinatura Android
-/.release/
-
-# Arquivos privados e saídas locais
-*.apk
-*.aab
-**/key.properties
-**/*.jks
-**/*.keystore
+# Credenciais e configurações locais
+.env
+.env.*
+!.env.example
 **/*firebase-adminsdk*.json
 **/firebase-service-account*.json
-/android/app/google-services.json
-/android/build/
-/android/.kotlin/
+**/google-services.json
+**/key.properties
+*.jks
+*.keystore
+*.pem
+*.p12
+*.pfx
+
+# Artefatos Android e arquivos temporários
+*.apk
+*.aab
 /tmp/
 /test-output/
-/node_modules/
-/third_party/pdfx/example/
-/third_party/pdfx/.dart_tool/
-/third_party/pdfx/build/
+/src/third_party/pdfx/example/

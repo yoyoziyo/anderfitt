@@ -1,7 +1,7 @@
 import { readdirSync, statSync, existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const root = 'build/web';
+const root = 'src/build/web';
 function walk(dir) {
   return readdirSync(dir).flatMap(name => {
     const path = join(dir, name);
@@ -13,7 +13,7 @@ for (const path of required) if (!existsSync(join(root, path))) throw new Error(
 const files = walk(root);
 for (const path of files) {
   if (statSync(path).size > 25 * 1024 * 1024) throw new Error(`Arquivo excede o limite da Cloudflare: ${path}`);
-  if (/\.release|firebase-adminsdk|firebase-service-account|\.(jks|keystore|map)$/.test(path)) throw new Error(`Arquivo privado no pacote: ${path}`);
+  if (/\.release|firebase-adminsdk|firebase-service-account|google-services\.json|(^|[\\/])(backend|supabase|test|scripts)[\\/]|\.(jks|keystore|pem|p12|pfx|map)$/.test(path)) throw new Error(`Arquivo privado ou de desenvolvimento no pacote: ${path}`);
 }
 const pdfs = files.filter(path => path.toLowerCase().endsWith('.pdf'));
 if (pdfs.length !== 59) throw new Error(`Esperados 59 PDFs; encontrados ${pdfs.length}`);

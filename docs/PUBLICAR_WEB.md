@@ -33,6 +33,8 @@ Não é necessário configurar senhas de alunos, chave administrativa do Supabas
 
 A cada alteração enviada para main, o mesmo processo será repetido. Pull requests são testados e compilados, mas não publicam a versão de produção.
 
+O workflow compila dentro de `src/` e publica exclusivamente `src/build/web/`. As pastas `backend/`, `docs/`, os testes e o código-fonte não fazem parte da hospedagem.
+
 ## 4. Conferir antes de entregar
 
 - As mesmas contas entram no Android e no site.

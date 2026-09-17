@@ -25,3 +25,23 @@ ANDERFIT
 ```
 
 Em celulares: navegação inferior, botões largos e conteúdo em uma coluna. Em telas de pelo menos 900 px: menu lateral, conteúdo central com largura controlada e contato acessível. O visual, cores, logo e fontes são compartilhados com o Android.
+
+## Organização do repositório
+
+```text
+anderfitt/
+├── src/
+│   ├── lib/            # Telas e acesso ao Supabase
+│   ├── web/            # Entrada HTML, abertura e PDF.js
+│   ├── assets/         # Logo, fontes e 59 PDFs
+│   ├── test/           # Testes da interface
+│   ├── third_party/    # Leitor PDF com licença e ajuste local
+│   └── pubspec.yaml    # Dependências da versão web
+├── backend/supabase/   # Funções, migrações e testes de acesso
+├── docs/               # Desenvolvimento e publicação
+├── scripts/            # Verificações de segurança e pacote
+├── .github/workflows/  # Validação e publicação automática
+└── README.md
+```
+
+`src/build/web/` é gerado pela compilação e é a única pasta publicada. Caches, prévias, builds e credenciais são ignorados pelo Git. O projeto Android original não foi movido nem alterado.

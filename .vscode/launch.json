@@ -1,1 +1,13 @@
-{"version":"0.2.0","configurations":[{"name":"ANDERFIT · Chrome","request":"launch","type":"dart","deviceId":"chrome"},{"name":"ANDERFIT · Android","request":"launch","type":"dart"}]}
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ANDERFIT Web · Chrome",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "${workspaceFolder}/src",
+      "program": "${workspaceFolder}/src/lib/main.dart",
+      "deviceId": "chrome"
+    }
+  ]
+}

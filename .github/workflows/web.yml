@@ -31,16 +31,20 @@ jobs:
       - name: Conferir arquivos privados
         run: node scripts/check-secrets.mjs
       - run: flutter pub get
+        working-directory: src
       - run: flutter analyze
+        working-directory: src
       - run: flutter test
+        working-directory: src
       - name: Compilar site
         run: flutter build web --release --no-web-resources-cdn --no-source-maps
+        working-directory: src
       - name: Conferir pacote web
         run: node scripts/check-web.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: anderfit-web
-          path: build/web
+          path: src/build/web
           retention-days: 7
       - name: Publicar na Cloudflare
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.CLOUDFLARE_PAGES_PROJECT != ''
@@ -48,4 +52,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy build/web --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT }} --branch=main
+          command: pages deploy src/build/web --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT }} --branch=main
