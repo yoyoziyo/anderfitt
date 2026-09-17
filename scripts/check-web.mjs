@@ -8,7 +8,7 @@ function walk(dir) {
     return statSync(path).isDirectory() ? walk(path) : [path];
   });
 }
-const required = ['index.html', 'main.dart.js', 'flutter_bootstrap.js', 'manifest.json', 'pdf-loader.mjs', 'vendor/pdfjs/pdf.min.mjs', 'vendor/pdfjs/pdf.worker.min.mjs'];
+const required = ['index.html', 'main.dart.js', 'flutter_bootstrap.js', 'manifest.json', 'pdf-loader.mjs', 'vendor/pdfjs/pdf.min.mjs', 'vendor/pdfjs/pdf.worker.min.mjs', 'icons/favicon-16.png', 'icons/favicon-32.png', 'icons/apple-touch-icon.png', 'social/anderfit-share-v1.png'];
 for (const path of required) if (!existsSync(join(root, path))) throw new Error(`Arquivo web ausente: ${path}`);
 const files = walk(root);
 for (const path of files) {
