@@ -43,12 +43,12 @@ node scripts/check-secrets.mjs
 cd src
 flutter analyze
 flutter test
-flutter build web --release --no-web-resources-cdn --no-source-maps
+flutter build web --release --base-href /anderfitt/ --no-web-resources-cdn --no-source-maps
 cd ..
-node scripts/check-web.mjs
+node scripts/check-web.mjs /anderfitt/
 ```
 
-A publicação utiliza somente `src/build/web/`. O workflow gera o artefato `anderfit-web` e publica na Cloudflare quando as configurações da conta estiverem disponíveis. O site precisa de conexão; os PDFs são carregados ao abrir cada material.
+Endereço: https://yoyoziyo.github.io/anderfitt/. A publicação utiliza somente `src/build/web/`. O workflow gera o artefato `anderfit-web` e publica automaticamente no GitHub Pages após a validação. O site precisa de conexão; os PDFs são carregados ao abrir cada material.
 
 ## Segurança e dados
 

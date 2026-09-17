@@ -18,4 +18,6 @@ for (const path of files) {
 const pdfs = files.filter(path => path.toLowerCase().endsWith('.pdf'));
 if (pdfs.length !== 59) throw new Error(`Esperados 59 PDFs; encontrados ${pdfs.length}`);
 if (readFileSync(join(root, 'index.html'), 'utf8').includes('$FLUTTER_BASE_HREF')) throw new Error('Base URL do site não foi resolvida.');
+const expectedBase = process.argv[2] ?? '/';
+if (!readFileSync(join(root, 'index.html'), 'utf8').includes(`<base href="${expectedBase}">`)) throw new Error(`Base URL incorreta; esperado ${expectedBase}`);
 console.log(`Pacote web pronto: ${files.length} arquivos, ${pdfs.length} PDFs; todos abaixo de 25 MiB.`);

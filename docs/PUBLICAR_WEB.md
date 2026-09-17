@@ -1,52 +1,42 @@
-# Publicar ANDERFIT Web
+# Publicar ANDERFIT Web no GitHub Pages
 
-A hospedagem proposta é Cloudflare Pages, com o projeto mantido no GitHub. O Supabase continua sendo o mesmo usado no Android.
+Endereço de produção: https://yoyoziyo.github.io/anderfitt/
 
-## 1. Criar a hospedagem
+## Configuração
 
-1. Crie ou acesse uma conta Cloudflare gratuita.
-2. Abra Workers & Pages e crie um projeto Pages por **Direct Upload** chamado `anderfit` (ou outro nome disponível). O workflow do GitHub enviará o pacote pronto; a Cloudflare não precisa instalar Flutter.
-3. Copie o **Account ID** da conta e o nome exato do projeto.
-4. Crie um API Token com permissão **Account / Cloudflare Pages / Edit**, restrita à conta usada.
+Em Settings → Pages → Build and deployment → Source, escolha **GitHub Actions**. O site é compilado e publicado pelo workflow ANDERFIT Web; não publique a raiz de main, pois ela contém o código-fonte.
 
-## 2. Configurar o repositório
+Não é necessário token de hospedagem nem conta Cloudflare. O workflow usa o token temporário fornecido pelo próprio GitHub, com permissão de publicação apenas no job deploy.
 
-Em GitHub → Settings → Secrets and variables → Actions:
+## Publicação automática
 
-**Secret:**
+1. Cada alteração em main executa análise, testes, compilação e conferência do pacote.
+2. O Flutter compila com `--base-href /anderfitt/` para o endereço deste repositório.
+3. Somente `src/build/web/` é enviado como pacote do Pages.
+4. O job deploy publica após o build passar.
 
-- `CLOUDFLARE_API_TOKEN`: token com permissão para publicar em Pages.
+Pull requests são verificados e compilados, mas não publicam. Também é possível executar Actions → ANDERFIT Web → Run workflow.
 
-**Variables:**
+## Compilar manualmente
 
-- `CLOUDFLARE_ACCOUNT_ID`: ID da conta Cloudflare.
-- `CLOUDFLARE_PAGES_PROJECT`: nome exato do projeto Pages.
+```sh
+cd src
+flutter pub get
+flutter build web --release --base-href /anderfitt/ --no-web-resources-cdn --no-source-maps
+cd ..
+node scripts/check-web.mjs /anderfitt/
+```
 
-Não é necessário configurar senhas de alunos, chave administrativa do Supabase ou conta de serviço Firebase no GitHub.
+O pacote contém seu próprio index.html. Não mova o HTML de src/web para a raiz, pois ele é um modelo que precisa da compilação Flutter.
 
-## 3. Publicar
+## Antes de distribuir
 
-1. Abra Actions → ANDERFIT Web → Run workflow → main.
-2. A execução analisa, testa, compila e publica se as três configurações estiverem preenchidas.
-3. Abra o endereço HTTPS fornecido pela Cloudflare (`https://NOME.pages.dev`).
-4. Teste o login do personal e de um aluno de teste no Safari do iPhone.
+- Testar login, primeiro acesso, treino, medidas e hidratação.
+- Conferir os resultados no painel do personal.
+- Abrir PDFs, avançar e voltar páginas, inclusive no livro de receitas.
+- Conferir vídeos, WhatsApp, teclado e retorno ao site.
+- Validar no Safari de um iPhone real.
 
-A cada alteração enviada para main, o mesmo processo será repetido. Pull requests são testados e compilados, mas não publicam a versão de produção.
+O site não solicita notificações web. Os dados dos alunos ficam no Supabase com autenticação e regras de acesso. Os PDFs são arquivos estáticos públicos por URL. Pastas de servidor, testes, código-fonte e credenciais não são incluídas na publicação.
 
-O workflow compila dentro de `src/` e publica exclusivamente `src/build/web/`. As pastas `backend/`, `docs/`, os testes e o código-fonte não fazem parte da hospedagem.
-
-## 4. Conferir antes de entregar
-
-- As mesmas contas entram no Android e no site.
-- As alterações do aluno aparecem no painel do personal ao atualizar.
-- Cada aluno vê somente os próprios dados.
-- Os 59 PDFs abrem dentro do leitor; testar também o livro de receitas, que é maior.
-- Vídeos e WhatsApp abrem após um toque.
-- Nenhuma solicitação de notificação é mostrada no navegador.
-- Logo, teclado, rolagem e navegação ficam corretos no Safari.
-
-A biblioteca publicada é formada por arquivos estáticos acessíveis por URL; o login protege os dados dos alunos no Supabase, mas não torna os PDFs privados. Se no futuro os materiais precisarem de acesso restrito, usar entrega autenticada no servidor.
-
-## Sem configurar a Cloudflare ainda
-
-A execução continua produzindo o artefato `anderfit-web`. Ele pode ser baixado para revisão ou enviado manualmente por Wrangler. O repositório preparado não equivale a um site já publicado.
+GitHub Pages não aplica o arquivo `_headers`; a proteção dos dados dos alunos depende da autenticação e das regras do Supabase, e o site usa HTTPS.

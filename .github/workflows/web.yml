@@ -17,10 +17,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -36,20 +32,33 @@ jobs:
         working-directory: src
       - run: flutter test
         working-directory: src
-      - name: Compilar site
-        run: flutter build web --release --no-web-resources-cdn --no-source-maps
+      - name: Compilar site para GitHub Pages
+        run: flutter build web --release --base-href /anderfitt/ --no-web-resources-cdn --no-source-maps
         working-directory: src
       - name: Conferir pacote web
-        run: node scripts/check-web.mjs
+        run: node scripts/check-web.mjs /anderfitt/
       - uses: actions/upload-artifact@v4
         with:
           name: anderfit-web
           path: src/build/web
           retention-days: 7
-      - name: Publicar na Cloudflare
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.CLOUDFLARE_PAGES_PROJECT != ''
-        uses: cloudflare/wrangler-action@v3
+      - name: Preparar pacote do GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy src/build/web --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT }} --branch=main
+          path: src/build/web
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
